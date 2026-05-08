@@ -130,7 +130,7 @@ function Details() {
 
         <Section title="What you get">
           <ul className="grid gap-2 md:grid-cols-2">
-            {o.benefits.map((b) => (
+            {o.benefits.map((b: string) => (
               <li
                 key={b}
                 className="flex items-start gap-2 rounded-xl bg-secondary px-3 py-2 text-sm"
@@ -143,7 +143,7 @@ function Details() {
 
         <Section title="Required documents & actions">
           <ul className="space-y-2">
-            {o.requiredDocuments.map((d) => (
+            {o.requiredDocuments.map((d: string) => (
               <li
                 key={d}
                 className="flex items-start gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm"
