@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { opportunities } from "@/data/opportunities";
+import { opportunities, type Opportunity } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import {
   ArrowLeft,
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/opportunity/$id")({
       <p className="text-sm text-destructive">{error.message}</p>
     </div>
   ),
-  loader: ({ params }) => {
+  loader: ({ params }): Opportunity => {
     const o = opportunities.find((x) => x.id === params.id);
     if (!o) throw notFound();
     return o;
