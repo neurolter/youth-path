@@ -249,6 +249,7 @@ export const opportunities: Opportunity[] = [
     requiredDocuments: ["Solution pitch", "Team CVs", "Video"],
     tags: ["Innovation", "Funding", "Tech"],
     cover: cover(7),
+  },
   {
     id: "9",
     name: "European Youth Summit 2026",
