@@ -35,6 +35,11 @@ export function useLocalStorage<T>(key: string, initial: T) {
 
 export interface Portfolio {
   fullName: string;
+  passportFullName: string;
+  passportSurname: string;
+  passportNumber: string;
+  passportExpiry: string;
+  countryOfOrigin: string;
   age: string;
   country: string;
   nationality: string;
@@ -57,6 +62,11 @@ export interface Portfolio {
 
 export const emptyPortfolio: Portfolio = {
   fullName: "",
+  passportFullName: "",
+  passportSurname: "",
+  passportNumber: "",
+  passportExpiry: "",
+  countryOfOrigin: "",
   age: "",
   country: "",
   nationality: "",
