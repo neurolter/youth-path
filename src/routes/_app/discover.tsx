@@ -265,7 +265,7 @@ export function SwipeCard({
           <p className="text-xs font-medium uppercase tracking-wide opacity-90">
             {opportunity.type} · {opportunity.industry}
           </p>
-          <h2 className="mt-1 text-2xl font-semibold leading-tight drop-shadow-sm">
+          <h2 className="mt-1 text-xl sm:text-2xl font-semibold leading-tight drop-shadow-sm line-clamp-2">
             {opportunity.name}
           </h2>
         </div>
