@@ -14,11 +14,21 @@ const SECTIONS: {
   {
     title: "Basics",
     fields: [
-      { key: "fullName", label: "Full name" },
+      { key: "fullName", label: "Full name (display)" },
       { key: "age", label: "Age" },
       { key: "country", label: "Country of residence" },
+      { key: "countryOfOrigin", label: "Country of origin" },
       { key: "nationality", label: "Nationality" },
       { key: "email", label: "Email" },
+    ],
+  },
+  {
+    title: "Passport (required for fully funded opportunities)",
+    fields: [
+      { key: "passportFullName", label: "Names as in passport", placeholder: "Given names exactly as printed" },
+      { key: "passportSurname", label: "Surnames as in passport", placeholder: "Family names exactly as printed" },
+      { key: "passportNumber", label: "Passport number" },
+      { key: "passportExpiry", label: "Passport expiry date", placeholder: "YYYY-MM-DD" },
     ],
   },
   {

@@ -100,7 +100,7 @@ function Discover() {
         </div>
       )}
 
-      <div className="relative h-[560px]">
+      <div className="relative h-[min(72vh,560px)] min-h-[460px]">
         {queue.slice(0, 3).reverse().map((o, i, arr) => {
           const depth = arr.length - 1 - i;
           const isTop = depth === 0;
@@ -249,7 +249,7 @@ export function SwipeCard({
       }`}
     >
       <div
-        className={`relative h-56 bg-gradient-to-br ${opportunity.cover} p-5 text-white`}
+        className={`relative h-44 sm:h-56 bg-gradient-to-br ${opportunity.cover} p-4 sm:p-5 text-white`}
       >
         <div className="flex items-center justify-between">
           {opportunity.verified && (
@@ -265,7 +265,7 @@ export function SwipeCard({
           <p className="text-xs font-medium uppercase tracking-wide opacity-90">
             {opportunity.type} · {opportunity.industry}
           </p>
-          <h2 className="mt-1 text-2xl font-semibold leading-tight drop-shadow-sm">
+          <h2 className="mt-1 text-xl sm:text-2xl font-semibold leading-tight drop-shadow-sm line-clamp-2">
             {opportunity.name}
           </h2>
         </div>
