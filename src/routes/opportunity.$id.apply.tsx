@@ -59,7 +59,7 @@ function EasyApply() {
   const [confirmAccurate, setConfirmAccurate] = useState(false);
   const [confirmReviewed, setConfirmReviewed] = useState(false);
   const [docs, setDocs] = useState<Record<string, boolean>>({});
-  const allDocs = o.requiredDocuments.every((d) => docs[d]);
+  const allDocs = o.requiredDocuments.every((d: string) => docs[d]);
   const canSubmit = confirmAccurate && confirmReviewed && allDocs && motivation.trim().length > 30;
 
   const alreadySubmitted = submitted.some((s) => s.opportunityId === o.id);
@@ -169,7 +169,7 @@ function EasyApply() {
       <section className="mt-4 rounded-2xl border border-border bg-card p-4">
         <h2 className="text-sm font-semibold">Required documents</h2>
         <ul className="mt-2 space-y-2">
-          {o.requiredDocuments.map((d) => (
+          {o.requiredDocuments.map((d: string) => (
             <li key={d} className="flex items-start gap-2 text-sm">
               <input
                 type="checkbox"
@@ -187,7 +187,7 @@ function EasyApply() {
         <section className="mt-4 rounded-2xl border border-warning/40 bg-warning/10 p-4">
           <h2 className="text-sm font-semibold">Steps you must complete yourself</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
-            {o.manualSteps.map((s) => (
+            {o.manualSteps.map((s: string) => (
               <li key={s}>{s}</li>
             ))}
           </ul>
