@@ -5,7 +5,6 @@ import { useLocalStorage } from "@/lib/store";
 import {
   Heart,
   X,
-  Send,
   Eye,
   ShieldCheck,
   MapPin,
