@@ -44,18 +44,27 @@ function Discover() {
   const [region, setRegion] = useState("All");
   const [funding, setFunding] = useState<string>("all");
   const [type, setType] = useState("All");
+  const [language, setLanguage] = useState("All");
+  const [area, setArea] = useState("All");
+  const [format, setFormat] = useState<string>("all");
   const [deadlineSoon, setDeadlineSoon] = useState(false);
+  const [age, setAge] = useState<string>("");
 
   const queue = useMemo(() => {
+    const ageNum = age ? parseInt(age, 10) : NaN;
     return opportunities.filter((o) => {
       if (saved.includes(o.id) || skipped.includes(o.id)) return false;
       if (region !== "All" && o.region !== region) return false;
       if (funding !== "all" && o.funding !== funding) return false;
       if (type !== "All" && o.type !== type) return false;
+      if (language !== "All" && o.language !== language) return false;
+      if (area !== "All" && o.industry !== area) return false;
+      if (format !== "all" && o.format !== format) return false;
       if (deadlineSoon && daysUntil(o.deadline) > 30) return false;
+      if (!isNaN(ageNum) && (ageNum < o.minAge || ageNum > o.maxAge)) return false;
       return true;
     });
-  }, [saved, skipped, region, funding, type, deadlineSoon]);
+  }, [saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
 
   const top = queue[0];
 
@@ -64,6 +73,17 @@ function Discover() {
   const reset = () => {
     setSaved([]);
     setSkipped([]);
+  };
+
+  const clearFilters = () => {
+    setRegion("All");
+    setFunding("all");
+    setType("All");
+    setLanguage("All");
+    setArea("All");
+    setFormat("all");
+    setDeadlineSoon(false);
+    setAge("");
   };
 
   return (
