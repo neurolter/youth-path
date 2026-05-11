@@ -1,6 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { opportunities, REGIONS, FUNDING, TYPES, type Opportunity } from "@/data/opportunities";
+import {
+  opportunities,
+  REGIONS,
+  FUNDING,
+  TYPES,
+  FORMATS,
+  LANGUAGES,
+  AREAS,
+  type Opportunity,
+} from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import {
   Heart,
@@ -35,18 +44,27 @@ function Discover() {
   const [region, setRegion] = useState("All");
   const [funding, setFunding] = useState<string>("all");
   const [type, setType] = useState("All");
+  const [language, setLanguage] = useState("All");
+  const [area, setArea] = useState("All");
+  const [format, setFormat] = useState<string>("all");
   const [deadlineSoon, setDeadlineSoon] = useState(false);
+  const [age, setAge] = useState<string>("");
 
   const queue = useMemo(() => {
+    const ageNum = age ? parseInt(age, 10) : NaN;
     return opportunities.filter((o) => {
       if (saved.includes(o.id) || skipped.includes(o.id)) return false;
       if (region !== "All" && o.region !== region) return false;
       if (funding !== "all" && o.funding !== funding) return false;
       if (type !== "All" && o.type !== type) return false;
+      if (language !== "All" && o.language !== language) return false;
+      if (area !== "All" && o.industry !== area) return false;
+      if (format !== "all" && o.format !== format) return false;
       if (deadlineSoon && daysUntil(o.deadline) > 30) return false;
+      if (!isNaN(ageNum) && (ageNum < o.minAge || ageNum > o.maxAge)) return false;
       return true;
     });
-  }, [saved, skipped, region, funding, type, deadlineSoon]);
+  }, [saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
 
   const top = queue[0];
 
@@ -55,6 +73,17 @@ function Discover() {
   const reset = () => {
     setSaved([]);
     setSkipped([]);
+  };
+
+  const clearFilters = () => {
+    setRegion("All");
+    setFunding("all");
+    setType("All");
+    setLanguage("All");
+    setArea("All");
+    setFormat("all");
+    setDeadlineSoon(false);
+    setAge("");
   };
 
   return (
@@ -77,16 +106,39 @@ function Discover() {
       {filtersOpen && (
         <div className="space-y-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]">
           <FilterRow label="Region" options={REGIONS} value={region} onChange={setRegion} />
+          <FilterRow label="Area" options={AREAS} value={area} onChange={setArea} />
+          <FilterRow label="Language" options={LANGUAGES} value={language} onChange={setLanguage} />
           <FilterRow
             label="Funding"
             options={FUNDING.map((f) => f.label)}
-            valueLabels={FUNDING.map((f) => f.label)}
             value={FUNDING.find((f) => f.value === funding)?.label ?? "All funding"}
             onChange={(label) =>
               setFunding(FUNDING.find((f) => f.label === label)?.value ?? "all")
             }
           />
           <FilterRow label="Type" options={TYPES} value={type} onChange={setType} />
+          <FilterRow
+            label="Online or in-person"
+            options={FORMATS.map((f) => f.label)}
+            value={FORMATS.find((f) => f.value === format)?.label ?? "Any format"}
+            onChange={(label) =>
+              setFormat(FORMATS.find((f) => f.label === label)?.value ?? "all")
+            }
+          />
+          <div>
+            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Eligibility (your age)
+            </p>
+            <input
+              type="number"
+              min={10}
+              max={60}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              placeholder="e.g. 22"
+              className="w-28 rounded-full border border-border bg-background px-3 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+          </div>
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -96,8 +148,17 @@ function Discover() {
             />
             <Clock className="h-4 w-4 text-muted-foreground" /> Deadline within 30 days
           </label>
+          <div className="flex justify-end pt-1">
+            <button
+              onClick={clearFilters}
+              className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-muted"
+            >
+              Clear filters
+            </button>
+          </div>
         </div>
       )}
+
 
       <div className="relative h-[min(72vh,560px)] min-h-[460px]">
         {queue.slice(0, 3).reverse().map((o, i, arr) => {

@@ -489,3 +489,11 @@ export const FORMATS: { value: Format | "all"; label: string }[] = [
   { value: "hybrid", label: "Hybrid" },
   { value: "online", label: "Online" },
 ];
+export const LANGUAGES = [
+  "All",
+  ...Array.from(new Set(opportunities.map((o) => o.language))).sort(),
+];
+export const AREAS = [
+  "All",
+  ...Array.from(new Set(opportunities.map((o) => o.industry))).sort(),
+];
