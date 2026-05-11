@@ -254,7 +254,6 @@ function ApplyCTA({ opportunity }: { opportunity: Opportunity }) {
       <>
         <Link
           to="/assistant"
-          search={{ opportunityId: opportunity.id } as never}
           className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
         >
           <FileEdit className="h-4 w-4" /> Assisted Apply
