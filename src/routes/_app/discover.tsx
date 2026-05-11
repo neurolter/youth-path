@@ -1,6 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { opportunities, REGIONS, FUNDING, TYPES, type Opportunity } from "@/data/opportunities";
+import {
+  opportunities,
+  REGIONS,
+  FUNDING,
+  TYPES,
+  FORMATS,
+  LANGUAGES,
+  AREAS,
+  type Opportunity,
+} from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import {
   Heart,
