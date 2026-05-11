@@ -98,14 +98,7 @@ function Details() {
           </div>
 
           <div className="mt-5 flex flex-wrap gap-2">
-            <a
-              href={o.applicationLink}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
-            >
-              Apply now <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            <ApplyCTA opportunity={o} />
             <button
               onClick={toggleSave}
               className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
@@ -117,13 +110,8 @@ function Details() {
               <Heart className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`} />
               {isSaved ? "Saved" : "Save"}
             </button>
-            <Link
-              to="/assistant"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary"
-            >
-              <Sparkles className="h-4 w-4" /> Draft my answers
-            </Link>
           </div>
+          <ApplyModeNote mode={resolveApplyMode(o)} />
         </div>
 
         <Section title="About">
