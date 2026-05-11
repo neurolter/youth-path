@@ -148,6 +148,25 @@ function Details() {
           </ul>
         </Section>
 
+        {o.manualSteps && o.manualSteps.length > 0 && (
+          <Section title="You must complete these steps yourself">
+            <ul className="space-y-2">
+              {o.manualSteps.map((s) => (
+                <li
+                  key={s}
+                  className="flex items-start gap-2 rounded-xl border border-warning/40 bg-warning/10 px-3 py-2 text-sm"
+                >
+                  <CreditCard className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                  {s}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              YouthMatch will never pay, sign, or post on your behalf.
+            </p>
+          </Section>
+        )}
+
         <Section title="Details">
           <div className="grid gap-2 text-sm md:grid-cols-2">
             <KV k="Region" v={o.region} icon={Globe2} />
