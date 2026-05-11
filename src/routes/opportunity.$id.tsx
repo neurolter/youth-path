@@ -151,7 +151,7 @@ function Details() {
         {o.manualSteps && o.manualSteps.length > 0 && (
           <Section title="You must complete these steps yourself">
             <ul className="space-y-2">
-              {o.manualSteps.map((s) => (
+              {o.manualSteps.map((s: string) => (
                 <li
                   key={s}
                   className="flex items-start gap-2 rounded-xl border border-warning/40 bg-warning/10 px-3 py-2 text-sm"
