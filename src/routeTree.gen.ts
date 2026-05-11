@@ -16,6 +16,7 @@ import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppPortfolioRouteImport } from './routes/_app/portfolio'
 import { Route as AppDiscoverRouteImport } from './routes/_app/discover'
 import { Route as AppAssistantRouteImport } from './routes/_app/assistant'
+import { Route as OpportunityIdApplyRouteImport } from './routes/opportunity.$id.apply'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -51,6 +52,11 @@ const AppAssistantRoute = AppAssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => AppRoute,
 } as any)
+const OpportunityIdApplyRoute = OpportunityIdApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => OpportunityIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -58,7 +64,8 @@ export interface FileRoutesByFullPath {
   '/discover': typeof AppDiscoverRoute
   '/portfolio': typeof AppPortfolioRoute
   '/saved': typeof AppSavedRoute
-  '/opportunity/$id': typeof OpportunityIdRoute
+  '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -66,7 +73,8 @@ export interface FileRoutesByTo {
   '/discover': typeof AppDiscoverRoute
   '/portfolio': typeof AppPortfolioRoute
   '/saved': typeof AppSavedRoute
-  '/opportunity/$id': typeof OpportunityIdRoute
+  '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -76,7 +84,8 @@ export interface FileRoutesById {
   '/_app/discover': typeof AppDiscoverRoute
   '/_app/portfolio': typeof AppPortfolioRoute
   '/_app/saved': typeof AppSavedRoute
-  '/opportunity/$id': typeof OpportunityIdRoute
+  '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/saved'
     | '/opportunity/$id'
+    | '/opportunity/$id/apply'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/saved'
     | '/opportunity/$id'
+    | '/opportunity/$id/apply'
   id:
     | '__root__'
     | '/'
@@ -104,12 +115,13 @@ export interface FileRouteTypes {
     | '/_app/portfolio'
     | '/_app/saved'
     | '/opportunity/$id'
+    | '/opportunity/$id/apply'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
-  OpportunityIdRoute: typeof OpportunityIdRoute
+  OpportunityIdRoute: typeof OpportunityIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -163,6 +175,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssistantRouteImport
       parentRoute: typeof AppRoute
     }
+    '/opportunity/$id/apply': {
+      id: '/opportunity/$id/apply'
+      path: '/apply'
+      fullPath: '/opportunity/$id/apply'
+      preLoaderRoute: typeof OpportunityIdApplyRouteImport
+      parentRoute: typeof OpportunityIdRoute
+    }
   }
 }
 
@@ -182,10 +201,22 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface OpportunityIdRouteChildren {
+  OpportunityIdApplyRoute: typeof OpportunityIdApplyRoute
+}
+
+const OpportunityIdRouteChildren: OpportunityIdRouteChildren = {
+  OpportunityIdApplyRoute: OpportunityIdApplyRoute,
+}
+
+const OpportunityIdRouteWithChildren = OpportunityIdRoute._addFileChildren(
+  OpportunityIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
-  OpportunityIdRoute: OpportunityIdRoute,
+  OpportunityIdRoute: OpportunityIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

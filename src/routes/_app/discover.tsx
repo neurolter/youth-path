@@ -5,7 +5,6 @@ import { useLocalStorage } from "@/lib/store";
 import {
   Heart,
   X,
-  Send,
   Eye,
   ShieldCheck,
   MapPin,
@@ -139,30 +138,26 @@ function Discover() {
       </div>
 
       {top && (
-        <div className="flex items-center justify-center gap-4">
-          <ActionBtn onClick={handleSkip} variant="muted" label="Skip">
-            <X className="h-6 w-6" />
-          </ActionBtn>
-          <Link
-            to="/opportunity/$id"
-            params={{ id: top.id }}
-            className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card text-foreground shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
-            aria-label="View details"
-          >
-            <Eye className="h-5 w-5" />
-          </Link>
-          <ActionBtn onClick={handleSave} variant="primary" label="Save">
-            <Heart className="h-7 w-7 fill-current" />
-          </ActionBtn>
-          <a
-            href={top.applicationLink}
-            target="_blank"
-            rel="noreferrer"
-            className="grid h-12 w-12 place-items-center rounded-full bg-success text-success-foreground shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
-            aria-label="Apply"
-          >
-            <Send className="h-5 w-5" />
-          </a>
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center justify-center gap-4">
+            <ActionBtn onClick={handleSkip} variant="muted" label="Not for me">
+              <X className="h-6 w-6" />
+            </ActionBtn>
+            <Link
+              to="/opportunity/$id"
+              params={{ id: top.id }}
+              className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card text-foreground shadow-[var(--shadow-soft)] transition-transform hover:-translate-y-0.5"
+              aria-label="View details"
+            >
+              <Eye className="h-5 w-5" />
+            </Link>
+            <ActionBtn onClick={handleSave} variant="primary" label="Interested">
+              <Heart className="h-7 w-7 fill-current" />
+            </ActionBtn>
+          </div>
+          <p className="text-center text-[11px] text-muted-foreground">
+            Swiping right saves the opportunity. Open it to apply.
+          </p>
         </div>
       )}
     </div>

@@ -1,5 +1,9 @@
 export type FundingType = "free" | "paid" | "partial" | "fully-funded";
 export type Format = "online" | "hybrid" | "in-person";
+// "easy"     → managed inside YouthMatch by a verified organizer (in-app form)
+// "assisted" → external opportunity, AI helps draft answers
+// "external" → external opportunity, just open the official link
+export type ApplyMode = "easy" | "assisted" | "external";
 
 export interface Opportunity {
   id: string;
@@ -23,8 +27,18 @@ export interface Opportunity {
   description: string;
   benefits: string[];
   requiredDocuments: string[];
+  /** Optional extra requirements that the user must complete OUTSIDE the app
+   * (payment, recommendation letters, video, social posts, signatures, etc.). */
+  manualSteps?: string[];
   tags: string[];
   cover: string; // gradient seed
+  /** Defaults to "assisted" for verified external opportunities, "external" otherwise.
+   * Only set "easy" for opportunities created and managed inside YouthMatch. */
+  applyMode?: ApplyMode;
+}
+
+export function resolveApplyMode(o: Opportunity): ApplyMode {
+  return o.applyMode ?? (o.verified ? "assisted" : "external");
 }
 
 const cover = (i: number) => {

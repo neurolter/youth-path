@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { opportunities, type Opportunity } from "@/data/opportunities";
+import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import {
   ArrowLeft,
@@ -14,6 +14,8 @@ import {
   Heart,
   Sparkles,
   AlertTriangle,
+  FileEdit,
+  CreditCard,
 } from "lucide-react";
 
 export const Route = createFileRoute("/opportunity/$id")({
@@ -96,14 +98,7 @@ function Details() {
           </div>
 
           <div className="mt-5 flex flex-wrap gap-2">
-            <a
-              href={o.applicationLink}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
-            >
-              Apply now <ExternalLink className="h-3.5 w-3.5" />
-            </a>
+            <ApplyCTA opportunity={o} />
             <button
               onClick={toggleSave}
               className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
@@ -115,13 +110,8 @@ function Details() {
               <Heart className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`} />
               {isSaved ? "Saved" : "Save"}
             </button>
-            <Link
-              to="/assistant"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary"
-            >
-              <Sparkles className="h-4 w-4" /> Draft my answers
-            </Link>
           </div>
+          <ApplyModeNote mode={resolveApplyMode(o)} />
         </div>
 
         <Section title="About">
@@ -157,6 +147,25 @@ function Details() {
             ))}
           </ul>
         </Section>
+
+        {o.manualSteps && o.manualSteps.length > 0 && (
+          <Section title="You must complete these steps yourself">
+            <ul className="space-y-2">
+              {o.manualSteps.map((s: string) => (
+                <li
+                  key={s}
+                  className="flex items-start gap-2 rounded-xl border border-warning/40 bg-warning/10 px-3 py-2 text-sm"
+                >
+                  <CreditCard className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                  {s}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              YouthMatch will never pay, sign, or post on your behalf.
+            </p>
+          </Section>
+        )}
 
         <Section title="Details">
           <div className="grid gap-2 text-sm md:grid-cols-2">
@@ -222,5 +231,67 @@ function KV({ k, v, icon: Icon }: { k: string; v: string; icon: React.ElementTyp
       <span className="text-xs text-muted-foreground">{k}:</span>
       <span className="text-xs font-medium capitalize">{v}</span>
     </div>
+  );
+}
+
+function ApplyCTA({ opportunity }: { opportunity: Opportunity }) {
+  const mode = resolveApplyMode(opportunity);
+
+  if (mode === "easy") {
+    return (
+      <Link
+        to="/opportunity/$id/apply"
+        params={{ id: opportunity.id }}
+        className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+      >
+        <Sparkles className="h-4 w-4" /> Easy Apply
+      </Link>
+    );
+  }
+
+  if (mode === "assisted") {
+    return (
+      <>
+        <Link
+          to="/assistant"
+          className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+        >
+          <FileEdit className="h-4 w-4" /> Assisted Apply
+        </Link>
+        <a
+          href={opportunity.applicationLink}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary"
+        >
+          Open official site <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </>
+    );
+  }
+
+  return (
+    <a
+      href={opportunity.applicationLink}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+    >
+      Apply on official website <ExternalLink className="h-3.5 w-3.5" />
+    </a>
+  );
+}
+
+function ApplyModeNote({ mode }: { mode: "easy" | "assisted" | "external" }) {
+  const text =
+    mode === "easy"
+      ? "Easy Apply: this opportunity is managed inside YouthMatch. We pre-fill the form with your portfolio — you review and tap Submit."
+      : mode === "assisted"
+        ? "Assisted Apply: YouthMatch drafts answers, bios, and a checklist for you. You submit on the official website yourself."
+        : "External application: tap Apply to open the official website. YouthMatch does not submit on your behalf.";
+  return (
+    <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+      {text}
+    </p>
   );
 }
