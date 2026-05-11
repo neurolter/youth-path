@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { opportunities, type Opportunity } from "@/data/opportunities";
+import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import {
   ArrowLeft,
@@ -14,6 +14,8 @@ import {
   Heart,
   Sparkles,
   AlertTriangle,
+  FileEdit,
+  CreditCard,
 } from "lucide-react";
 
 export const Route = createFileRoute("/opportunity/$id")({
