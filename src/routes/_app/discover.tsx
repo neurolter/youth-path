@@ -106,16 +106,39 @@ function Discover() {
       {filtersOpen && (
         <div className="space-y-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]">
           <FilterRow label="Region" options={REGIONS} value={region} onChange={setRegion} />
+          <FilterRow label="Area" options={AREAS} value={area} onChange={setArea} />
+          <FilterRow label="Language" options={LANGUAGES} value={language} onChange={setLanguage} />
           <FilterRow
             label="Funding"
             options={FUNDING.map((f) => f.label)}
-            valueLabels={FUNDING.map((f) => f.label)}
             value={FUNDING.find((f) => f.value === funding)?.label ?? "All funding"}
             onChange={(label) =>
               setFunding(FUNDING.find((f) => f.label === label)?.value ?? "all")
             }
           />
           <FilterRow label="Type" options={TYPES} value={type} onChange={setType} />
+          <FilterRow
+            label="Online or in-person"
+            options={FORMATS.map((f) => f.label)}
+            value={FORMATS.find((f) => f.value === format)?.label ?? "Any format"}
+            onChange={(label) =>
+              setFormat(FORMATS.find((f) => f.label === label)?.value ?? "all")
+            }
+          />
+          <div>
+            <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Eligibility (your age)
+            </p>
+            <input
+              type="number"
+              min={10}
+              max={60}
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              placeholder="e.g. 22"
+              className="w-28 rounded-full border border-border bg-background px-3 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+            />
+          </div>
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -125,8 +148,17 @@ function Discover() {
             />
             <Clock className="h-4 w-4 text-muted-foreground" /> Deadline within 30 days
           </label>
+          <div className="flex justify-end pt-1">
+            <button
+              onClick={clearFilters}
+              className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground hover:bg-muted"
+            >
+              Clear filters
+            </button>
+          </div>
         </div>
       )}
+
 
       <div className="relative h-[min(72vh,560px)] min-h-[460px]">
         {queue.slice(0, 3).reverse().map((o, i, arr) => {
