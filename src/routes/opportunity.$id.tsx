@@ -233,3 +233,66 @@ function KV({ k, v, icon: Icon }: { k: string; v: string; icon: React.ElementTyp
     </div>
   );
 }
+
+function ApplyCTA({ opportunity }: { opportunity: Opportunity }) {
+  const mode = resolveApplyMode(opportunity);
+
+  if (mode === "easy") {
+    return (
+      <Link
+        to="/opportunity/$id/apply"
+        params={{ id: opportunity.id }}
+        className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+      >
+        <Sparkles className="h-4 w-4" /> Easy Apply
+      </Link>
+    );
+  }
+
+  if (mode === "assisted") {
+    return (
+      <>
+        <Link
+          to="/assistant"
+          search={{ opportunityId: opportunity.id } as never}
+          className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+        >
+          <FileEdit className="h-4 w-4" /> Assisted Apply
+        </Link>
+        <a
+          href={opportunity.applicationLink}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-secondary"
+        >
+          Open official site <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </>
+    );
+  }
+
+  return (
+    <a
+      href={opportunity.applicationLink}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-1.5 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] hover:-translate-y-0.5"
+    >
+      Apply on official website <ExternalLink className="h-3.5 w-3.5" />
+    </a>
+  );
+}
+
+function ApplyModeNote({ mode }: { mode: "easy" | "assisted" | "external" }) {
+  const text =
+    mode === "easy"
+      ? "Easy Apply: this opportunity is managed inside YouthMatch. We pre-fill the form with your portfolio — you review and tap Submit."
+      : mode === "assisted"
+        ? "Assisted Apply: YouthMatch drafts answers, bios, and a checklist for you. You submit on the official website yourself."
+        : "External application: tap Apply to open the official website. YouthMatch does not submit on your behalf.";
+  return (
+    <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+      {text}
+    </p>
+  );
+}
