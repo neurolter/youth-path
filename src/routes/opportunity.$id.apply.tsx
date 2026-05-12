@@ -1,6 +1,13 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
+import {
+  findOrgEventByOpportunityId,
+  getPublicOrgOpportunities,
+  newId,
+  orgStore,
+  type OrgApplication,
+} from "@/lib/organizer";
 import { emptyPortfolio, useLocalStorage, type Portfolio } from "@/lib/store";
 import {
   ArrowLeft,
@@ -14,7 +21,11 @@ import {
 export const Route = createFileRoute("/opportunity/$id/apply")({
   component: EasyApply,
   loader: ({ params }): Opportunity => {
-    const o = opportunities.find((x) => x.id === params.id);
+    const o =
+      opportunities.find((x) => x.id === params.id) ??
+      (typeof window !== "undefined"
+        ? getPublicOrgOpportunities().find((x) => x.id === params.id)
+        : undefined);
     if (!o) throw notFound();
     return o;
   },

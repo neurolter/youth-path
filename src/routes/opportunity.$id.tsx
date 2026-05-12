@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
+import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
 import { useLocalStorage } from "@/lib/store";
 import {
   ArrowLeft,
@@ -36,8 +37,19 @@ export const Route = createFileRoute("/opportunity/$id")({
     </div>
   ),
   loader: ({ params }): Opportunity => {
-    const o = opportunities.find((x) => x.id === params.id);
+    const o =
+      opportunities.find((x) => x.id === params.id) ??
+      (typeof window !== "undefined"
+        ? getPublicOrgOpportunities().find((x) => x.id === params.id)
+        : undefined);
     if (!o) throw notFound();
+    if (typeof window !== "undefined" && params.id.startsWith("org_")) {
+      const evId = params.id.slice(4);
+      const all = orgStore.events();
+      orgStore.setEvents(
+        all.map((e) => (e.id === evId ? { ...e, views: e.views + 1 } : e)),
+      );
+    }
     return o;
   },
 });
