@@ -11,6 +11,7 @@ import {
   type Opportunity,
 } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
+import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
 import {
   Heart,
   X,
