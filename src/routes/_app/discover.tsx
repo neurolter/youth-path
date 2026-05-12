@@ -74,7 +74,15 @@ function Discover() {
 
   const top = queue[0];
 
-  const handleSave = () => top && setSaved((s) => [top.id, ...s]);
+  const handleSave = () => {
+    if (!top) return;
+    setSaved((s) => [top.id, ...s]);
+    if (top.id.startsWith("org_")) {
+      const evId = top.id.slice(4);
+      const all = orgStore.events();
+      orgStore.setEvents(all.map((e) => (e.id === evId ? { ...e, saves: e.saves + 1 } : e)));
+    }
+  };
   const handleSkip = () => top && setSkipped((s) => [top.id, ...s]);
   const reset = () => {
     setSaved([]);
