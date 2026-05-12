@@ -21,12 +21,20 @@ export function AppLayout() {
             </span>
             <span className="text-lg font-semibold tracking-tight">YouthMatch</span>
           </Link>
-          <Link
-            to="/portfolio"
-            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            My profile
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/organizer"
+              className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              For organizers
+            </Link>
+            <Link
+              to="/portfolio"
+              className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              My profile
+            </Link>
+          </div>
         </div>
       </header>
 

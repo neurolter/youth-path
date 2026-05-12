@@ -11,6 +11,7 @@ import {
   type Opportunity,
 } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
+import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
 import {
   Heart,
   X,
@@ -50,9 +51,14 @@ function Discover() {
   const [deadlineSoon, setDeadlineSoon] = useState(false);
   const [age, setAge] = useState<string>("");
 
+  const allOpportunities = useMemo(() => {
+    if (typeof window === "undefined") return opportunities;
+    return [...getPublicOrgOpportunities(), ...opportunities];
+  }, []);
+
   const queue = useMemo(() => {
     const ageNum = age ? parseInt(age, 10) : NaN;
-    return opportunities.filter((o) => {
+    return allOpportunities.filter((o) => {
       if (saved.includes(o.id) || skipped.includes(o.id)) return false;
       if (region !== "All" && o.region !== region) return false;
       if (funding !== "all" && o.funding !== funding) return false;
@@ -64,11 +70,19 @@ function Discover() {
       if (!isNaN(ageNum) && (ageNum < o.minAge || ageNum > o.maxAge)) return false;
       return true;
     });
-  }, [saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
+  }, [allOpportunities, saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
 
   const top = queue[0];
 
-  const handleSave = () => top && setSaved((s) => [top.id, ...s]);
+  const handleSave = () => {
+    if (!top) return;
+    setSaved((s) => [top.id, ...s]);
+    if (top.id.startsWith("org_")) {
+      const evId = top.id.slice(4);
+      const all = orgStore.events();
+      orgStore.setEvents(all.map((e) => (e.id === evId ? { ...e, saves: e.saves + 1 } : e)));
+    }
+  };
   const handleSkip = () => top && setSkipped((s) => [top.id, ...s]);
   const reset = () => {
     setSaved([]);

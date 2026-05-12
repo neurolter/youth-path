@@ -1,6 +1,13 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
+import {
+  findOrgEventByOpportunityId,
+  getPublicOrgOpportunities,
+  newId,
+  orgStore,
+  type OrgApplication,
+} from "@/lib/organizer";
 import { emptyPortfolio, useLocalStorage, type Portfolio } from "@/lib/store";
 import {
   ArrowLeft,
@@ -14,7 +21,11 @@ import {
 export const Route = createFileRoute("/opportunity/$id/apply")({
   component: EasyApply,
   loader: ({ params }): Opportunity => {
-    const o = opportunities.find((x) => x.id === params.id);
+    const o =
+      opportunities.find((x) => x.id === params.id) ??
+      (typeof window !== "undefined"
+        ? getPublicOrgOpportunities().find((x) => x.id === params.id)
+        : undefined);
     if (!o) throw notFound();
     return o;
   },
@@ -87,6 +98,23 @@ function EasyApply() {
       { opportunityId: o.id, submittedAt: new Date().toISOString(), motivation },
       ...prev.filter((s) => s.opportunityId !== o.id),
     ]);
+    // For organizer-published events, write the application into the organizer's inbox.
+    const ev = findOrgEventByOpportunityId(o.id);
+    if (ev) {
+      const app: OrgApplication = {
+        id: newId(),
+        eventId: ev.id,
+        organizerId: ev.organizerId,
+        applicantName: portfolio.fullName,
+        applicantEmail: portfolio.email,
+        applicantCountry: portfolio.country,
+        portfolioSnapshot: { ...portfolio } as Record<string, string>,
+        answers: { Motivation: motivation },
+        status: "submitted",
+        submittedAt: new Date().toISOString(),
+      };
+      orgStore.setApps([app, ...orgStore.apps()]);
+    }
     navigate({ to: "/opportunity/$id/apply", params: { id: o.id } });
   };
 
