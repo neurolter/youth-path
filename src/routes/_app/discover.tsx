@@ -50,9 +50,14 @@ function Discover() {
   const [deadlineSoon, setDeadlineSoon] = useState(false);
   const [age, setAge] = useState<string>("");
 
+  const allOpportunities = useMemo(() => {
+    if (typeof window === "undefined") return opportunities;
+    return [...getPublicOrgOpportunities(), ...opportunities];
+  }, []);
+
   const queue = useMemo(() => {
     const ageNum = age ? parseInt(age, 10) : NaN;
-    return opportunities.filter((o) => {
+    return allOpportunities.filter((o) => {
       if (saved.includes(o.id) || skipped.includes(o.id)) return false;
       if (region !== "All" && o.region !== region) return false;
       if (funding !== "all" && o.funding !== funding) return false;
@@ -64,7 +69,7 @@ function Discover() {
       if (!isNaN(ageNum) && (ageNum < o.minAge || ageNum > o.maxAge)) return false;
       return true;
     });
-  }, [saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
+  }, [allOpportunities, saved, skipped, region, funding, type, language, area, format, deadlineSoon, age]);
 
   const top = queue[0];
 
