@@ -9,15 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as OrganizerRouteImport } from './routes/organizer'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganizerIndexRouteImport } from './routes/organizer/index'
+import { Route as OrganizerRegisterRouteImport } from './routes/organizer/register'
 import { Route as OpportunityIdRouteImport } from './routes/opportunity.$id'
 import { Route as AppSavedRouteImport } from './routes/_app/saved'
 import { Route as AppPortfolioRouteImport } from './routes/_app/portfolio'
 import { Route as AppDiscoverRouteImport } from './routes/_app/discover'
 import { Route as AppAssistantRouteImport } from './routes/_app/assistant'
+import { Route as OrganizerEventsNewRouteImport } from './routes/organizer/events.new'
+import { Route as OrganizerEventsEventIdRouteImport } from './routes/organizer/events.$eventId'
 import { Route as OpportunityIdApplyRouteImport } from './routes/opportunity.$id.apply'
 
+const OrganizerRoute = OrganizerRouteImport.update({
+  id: '/organizer',
+  path: '/organizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
@@ -26,6 +42,16 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OrganizerIndexRoute = OrganizerIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OrganizerRoute,
+} as any)
+const OrganizerRegisterRoute = OrganizerRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => OrganizerRoute,
 } as any)
 const OpportunityIdRoute = OpportunityIdRouteImport.update({
   id: '/opportunity/$id',
@@ -52,6 +78,16 @@ const AppAssistantRoute = AppAssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => AppRoute,
 } as any)
+const OrganizerEventsNewRoute = OrganizerEventsNewRouteImport.update({
+  id: '/events/new',
+  path: '/events/new',
+  getParentRoute: () => OrganizerRoute,
+} as any)
+const OrganizerEventsEventIdRoute = OrganizerEventsEventIdRouteImport.update({
+  id: '/events/$eventId',
+  path: '/events/$eventId',
+  getParentRoute: () => OrganizerRoute,
+} as any)
 const OpportunityIdApplyRoute = OpportunityIdApplyRouteImport.update({
   id: '/apply',
   path: '/apply',
@@ -60,72 +96,122 @@ const OpportunityIdApplyRoute = OpportunityIdApplyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/organizer': typeof OrganizerRouteWithChildren
   '/assistant': typeof AppAssistantRoute
   '/discover': typeof AppDiscoverRoute
   '/portfolio': typeof AppPortfolioRoute
   '/saved': typeof AppSavedRoute
   '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/organizer/register': typeof OrganizerRegisterRoute
+  '/organizer/': typeof OrganizerIndexRoute
   '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
+  '/organizer/events/$eventId': typeof OrganizerEventsEventIdRoute
+  '/organizer/events/new': typeof OrganizerEventsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/assistant': typeof AppAssistantRoute
   '/discover': typeof AppDiscoverRoute
   '/portfolio': typeof AppPortfolioRoute
   '/saved': typeof AppSavedRoute
   '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/organizer/register': typeof OrganizerRegisterRoute
+  '/organizer': typeof OrganizerIndexRoute
   '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
+  '/organizer/events/$eventId': typeof OrganizerEventsEventIdRoute
+  '/organizer/events/new': typeof OrganizerEventsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/organizer': typeof OrganizerRouteWithChildren
   '/_app/assistant': typeof AppAssistantRoute
   '/_app/discover': typeof AppDiscoverRoute
   '/_app/portfolio': typeof AppPortfolioRoute
   '/_app/saved': typeof AppSavedRoute
   '/opportunity/$id': typeof OpportunityIdRouteWithChildren
+  '/organizer/register': typeof OrganizerRegisterRoute
+  '/organizer/': typeof OrganizerIndexRoute
   '/opportunity/$id/apply': typeof OpportunityIdApplyRoute
+  '/organizer/events/$eventId': typeof OrganizerEventsEventIdRoute
+  '/organizer/events/new': typeof OrganizerEventsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/organizer'
     | '/assistant'
     | '/discover'
     | '/portfolio'
     | '/saved'
     | '/opportunity/$id'
+    | '/organizer/register'
+    | '/organizer/'
     | '/opportunity/$id/apply'
+    | '/organizer/events/$eventId'
+    | '/organizer/events/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/assistant'
     | '/discover'
     | '/portfolio'
     | '/saved'
     | '/opportunity/$id'
+    | '/organizer/register'
+    | '/organizer'
     | '/opportunity/$id/apply'
+    | '/organizer/events/$eventId'
+    | '/organizer/events/new'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/admin'
+    | '/organizer'
     | '/_app/assistant'
     | '/_app/discover'
     | '/_app/portfolio'
     | '/_app/saved'
     | '/opportunity/$id'
+    | '/organizer/register'
+    | '/organizer/'
     | '/opportunity/$id/apply'
+    | '/organizer/events/$eventId'
+    | '/organizer/events/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  AdminRoute: typeof AdminRoute
+  OrganizerRoute: typeof OrganizerRouteWithChildren
   OpportunityIdRoute: typeof OpportunityIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/organizer': {
+      id: '/organizer'
+      path: '/organizer'
+      fullPath: '/organizer'
+      preLoaderRoute: typeof OrganizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -139,6 +225,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/organizer/': {
+      id: '/organizer/'
+      path: '/'
+      fullPath: '/organizer/'
+      preLoaderRoute: typeof OrganizerIndexRouteImport
+      parentRoute: typeof OrganizerRoute
+    }
+    '/organizer/register': {
+      id: '/organizer/register'
+      path: '/register'
+      fullPath: '/organizer/register'
+      preLoaderRoute: typeof OrganizerRegisterRouteImport
+      parentRoute: typeof OrganizerRoute
     }
     '/opportunity/$id': {
       id: '/opportunity/$id'
@@ -175,6 +275,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssistantRouteImport
       parentRoute: typeof AppRoute
     }
+    '/organizer/events/new': {
+      id: '/organizer/events/new'
+      path: '/events/new'
+      fullPath: '/organizer/events/new'
+      preLoaderRoute: typeof OrganizerEventsNewRouteImport
+      parentRoute: typeof OrganizerRoute
+    }
+    '/organizer/events/$eventId': {
+      id: '/organizer/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/organizer/events/$eventId'
+      preLoaderRoute: typeof OrganizerEventsEventIdRouteImport
+      parentRoute: typeof OrganizerRoute
+    }
     '/opportunity/$id/apply': {
       id: '/opportunity/$id/apply'
       path: '/apply'
@@ -201,6 +315,24 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface OrganizerRouteChildren {
+  OrganizerRegisterRoute: typeof OrganizerRegisterRoute
+  OrganizerIndexRoute: typeof OrganizerIndexRoute
+  OrganizerEventsEventIdRoute: typeof OrganizerEventsEventIdRoute
+  OrganizerEventsNewRoute: typeof OrganizerEventsNewRoute
+}
+
+const OrganizerRouteChildren: OrganizerRouteChildren = {
+  OrganizerRegisterRoute: OrganizerRegisterRoute,
+  OrganizerIndexRoute: OrganizerIndexRoute,
+  OrganizerEventsEventIdRoute: OrganizerEventsEventIdRoute,
+  OrganizerEventsNewRoute: OrganizerEventsNewRoute,
+}
+
+const OrganizerRouteWithChildren = OrganizerRoute._addFileChildren(
+  OrganizerRouteChildren,
+)
+
 interface OpportunityIdRouteChildren {
   OpportunityIdApplyRoute: typeof OpportunityIdApplyRoute
 }
@@ -216,18 +348,10 @@ const OpportunityIdRouteWithChildren = OpportunityIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  AdminRoute: AdminRoute,
+  OrganizerRoute: OrganizerRouteWithChildren,
   OpportunityIdRoute: OpportunityIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
