@@ -12,6 +12,7 @@ import {
 } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
+import { getAutoPublishedOpportunities, isExpired } from "@/lib/sources";
 import {
   Heart,
   X,
