@@ -54,7 +54,13 @@ function Discover() {
 
   const allOpportunities = useMemo(() => {
     if (typeof window === "undefined") return opportunities;
-    return [...getPublicOrgOpportunities(), ...opportunities];
+    const merged = [
+      ...getAutoPublishedOpportunities(),
+      ...getPublicOrgOpportunities(),
+      ...opportunities,
+    ];
+    // Hide expired
+    return merged.filter((o) => !isExpired(o.deadline));
   }, []);
 
   const queue = useMemo(() => {
