@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
 import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
+import { getAutoPublishedOpportunities } from "@/lib/sources";
 import { useLocalStorage } from "@/lib/store";
 import {
   ArrowLeft,
