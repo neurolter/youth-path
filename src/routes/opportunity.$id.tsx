@@ -41,7 +41,8 @@ export const Route = createFileRoute("/opportunity/$id")({
     const o =
       opportunities.find((x) => x.id === params.id) ??
       (typeof window !== "undefined"
-        ? getPublicOrgOpportunities().find((x) => x.id === params.id)
+        ? getPublicOrgOpportunities().find((x) => x.id === params.id) ??
+          getAutoPublishedOpportunities().find((x) => x.id === params.id)
         : undefined);
     if (!o) throw notFound();
     if (typeof window !== "undefined" && params.id.startsWith("org_")) {
