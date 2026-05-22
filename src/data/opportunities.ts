@@ -478,7 +478,20 @@ export const opportunities: Opportunity[] = [
   },
 ];
 
-export const REGIONS = ["All", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Global"];
+import { seededOpportunities, COUNTRIES_LIST } from "./seedOpportunities";
+
+export const REGIONS = [
+  "All",
+  "Africa",
+  "Asia",
+  "Europe",
+  "Latin America",
+  "Middle East",
+  "North America",
+  "Oceania",
+  "Global",
+];
+export const COUNTRIES = ["All", ...COUNTRIES_LIST];
 export const FUNDING: { value: FundingType | "all"; label: string }[] = [
   { value: "all", label: "All funding" },
   { value: "fully-funded", label: "Fully funded" },
@@ -486,18 +499,48 @@ export const FUNDING: { value: FundingType | "all"; label: string }[] = [
   { value: "free", label: "Free" },
   { value: "paid", label: "Paid" },
 ];
-export const TYPES = ["All", "Summit", "Forum", "Fellowship", "Scholarship", "Festival", "Competition", "Conference"];
+export const TYPES = [
+  "All",
+  "Forum",
+  "Congress",
+  "Summit",
+  "Festival",
+  "Fellowship",
+  "Scholarship",
+  "Grant",
+  "Youth Leadership Program",
+  "Conference",
+  "Exchange Program",
+  "Model UN",
+  "Innovation Challenge",
+  "Peacebuilding Program",
+  "Climate Program",
+  "Diplomacy Program",
+  "Entrepreneurship Program",
+  "Public Policy Program",
+  "Education Program",
+  "AI & Technology Program",
+];
 export const FORMATS: { value: Format | "all"; label: string }[] = [
   { value: "all", label: "Any format" },
   { value: "in-person", label: "In-person" },
   { value: "hybrid", label: "Hybrid" },
   { value: "online", label: "Online" },
 ];
+
+const allForLookups = [...opportunities, ...seededOpportunities];
 export const LANGUAGES = [
   "All",
-  ...Array.from(new Set(opportunities.map((o) => o.language))).sort(),
+  ...Array.from(new Set(allForLookups.map((o) => o.language))).sort(),
 ];
 export const AREAS = [
   "All",
-  ...Array.from(new Set(opportunities.map((o) => o.industry))).sort(),
+  ...Array.from(new Set(allForLookups.map((o) => o.industry))).sort(),
 ];
+
+/** Merged static + seeded mock dataset. Replace later with backend fetch. */
+export const allOpportunitiesData: Opportunity[] = [
+  ...opportunities,
+  ...seededOpportunities,
+];
+
