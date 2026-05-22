@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { opportunities } from "@/data/opportunities";
+import { allOpportunitiesData as opportunities } from "@/data/opportunities";
 import { emptyPortfolio, useLocalStorage, type Portfolio } from "@/lib/store";
 import {
   ANSWER_CATEGORIES,
