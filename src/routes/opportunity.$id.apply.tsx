@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
+import { allOpportunitiesData as opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
 import {
   findOrgEventByOpportunityId,
   getPublicOrgOpportunities,

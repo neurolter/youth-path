@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { opportunities, resolveApplyMode, type Opportunity } from "@/data/opportunities";
+import { allOpportunitiesData, resolveApplyMode, type Opportunity } from "@/data/opportunities";
 import { getPublicOrgOpportunities, orgStore } from "@/lib/organizer";
 import { getAutoPublishedOpportunities } from "@/lib/sources";
 import { useLocalStorage } from "@/lib/store";
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/opportunity/$id")({
   ),
   loader: ({ params }): Opportunity => {
     const o =
-      opportunities.find((x) => x.id === params.id) ??
+      allOpportunitiesData.find((x) => x.id === params.id) ??
       (typeof window !== "undefined"
         ? getPublicOrgOpportunities().find((x) => x.id === params.id) ??
           getAutoPublishedOpportunities().find((x) => x.id === params.id)

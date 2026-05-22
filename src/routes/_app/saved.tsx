@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { opportunities } from "@/data/opportunities";
+import { allOpportunitiesData as opportunities } from "@/data/opportunities";
 import { useLocalStorage } from "@/lib/store";
 import { Heart, ShieldCheck, Trash2 } from "lucide-react";
 
