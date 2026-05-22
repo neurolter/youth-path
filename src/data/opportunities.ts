@@ -35,7 +35,11 @@ export interface Opportunity {
   /** Defaults to "assisted" for verified external opportunities, "external" otherwise.
    * Only set "easy" for opportunities created and managed inside YouthMatch. */
   applyMode?: ApplyMode;
+  /** Optional quality signal (0–100) used to filter discovery. */
+  trustScore?: number;
+  trustLevel?: "High" | "Medium" | "Low";
 }
+
 
 export function resolveApplyMode(o: Opportunity): ApplyMode {
   return o.applyMode ?? (o.verified ? "assisted" : "external");
