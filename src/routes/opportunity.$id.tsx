@@ -39,7 +39,7 @@ export const Route = createFileRoute("/opportunity/$id")({
   ),
   loader: ({ params }): Opportunity => {
     const o =
-      opportunities.find((x) => x.id === params.id) ??
+      allOpportunitiesData.find((x) => x.id === params.id) ??
       (typeof window !== "undefined"
         ? getPublicOrgOpportunities().find((x) => x.id === params.id) ??
           getAutoPublishedOpportunities().find((x) => x.id === params.id)
